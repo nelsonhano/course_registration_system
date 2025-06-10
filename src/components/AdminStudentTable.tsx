@@ -9,6 +9,7 @@ import {
 import { AiOutlineEdit } from "react-icons/ai";
 import { Student } from "@/lib/actions/type";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type AdminStudentTableProps = {
     students: Student[];
@@ -27,13 +28,13 @@ export default function AdminStudentTable({ students, adminId }: AdminStudentTab
                 <TableHead>Detail</TableHead>
             </TableRow>
         </TableHeader>
-        <TableBody>
-                {students.map(({fullName, id, matricNumber, department, active})=> (
+        <TableBody className="gap-5">
+                {students.map(({fullName, id, matricNumber, department, status})=> (
                 <TableRow key={id}>
                     <TableCell>{fullName}</TableCell>
                     <TableCell>{matricNumber}</TableCell>
                     <TableCell className="capitalize">{department}</TableCell>
-                    <TableCell className="capitalize">{active || "active"}</TableCell>
+                        <TableCell className={cn(status === "active" ? "bg-green-600 rounded-xl" : "bg-red-600 rounded-xl", "text-center")}>{status}</TableCell>
                     <TableCell>
                         <Link href={`/admin/${adminId}/dashboard/${id}`}><AiOutlineEdit size={20}/>
                         </Link>

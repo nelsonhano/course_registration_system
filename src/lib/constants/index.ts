@@ -67,6 +67,24 @@ export const levels = [
   "500 level",
 ] as const;
 
+export const editLevels = [
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
+] as const;
+
+export const gender = [
+  "female",
+  "male",
+] as const;
+
+export const status = [
+  "active",
+  "inactive",
+] as const;
+
 export const futaDepartments = [
   "Agricultural Extension & Communication Technology",
   "Agricultural & Resource Economics",

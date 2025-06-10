@@ -41,33 +41,24 @@ export declare type SearchParamProps = {
 interface Student {
   id: string;
   fullName: string;
-  staffId: string;
+  userId: string;
   department: string;
   avatar: string;
   matricNumber: string;
   email: string;
   phoneNumber: string;
-  active: string;
-}
-
-
-interface EditStudentData {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  department: string;
-  matricNumber: string;
   status: "active" | "noactive";
-  level: string;
 }
-// types.ts
-// /lib/actions/type.d.ts or types.ts
+
 export interface StudentType {
+  adminId?: string;
+  userId: string;
   fullName: string;
   email: string;
   phoneNumber: string;
   department: string;
   matricNumber: string;
-  status: "active" | "noactive";
+  status: "active" | "inactive";
+  gender: "female" | "male";
   level: "100" | "200" | "300" | "400" | "500";
 }

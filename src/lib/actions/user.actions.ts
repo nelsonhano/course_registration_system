@@ -7,7 +7,8 @@ import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { avatarPlaceholderUrl } from "../constants";
-import { CreateAdminAccountParams, CreateStudentAccountParams, EditStudentData, Student } from "./type";
+import { CreateAdminAccountParams, CreateStudentAccountParams, Student, StudentType } from "./type";
+import { revalidatePath } from "next/cache";
 const { databases, account, users } = await createAdminClient();
 
 
@@ -440,9 +441,10 @@ export const getAllStudents = async (): Promise<Student[]> => {
     const students: Student[] = res.documents.map((doc) => ({
       id: doc.$id,
       fullName: doc.fullName,
-      staffId: doc.staffId,
+      userId: doc.userId,
       department: doc.department,
       avatar: doc.avatar,
+      status: doc.status,
       matricNumber: doc.matricNumber,
       email: doc.email,
       phoneNumber: doc.phoneNumber,
@@ -477,25 +479,19 @@ export const getAdminById = async ({ adminId }: { adminId: string }) => {
 };
 
 
-export const updateStudentDetail = async (data: EditStudentData) => {
-  console.log(data);
-  const { fullName, email, phoneNumber, department, matricNumber, status, level} = data;
+export const updateStudentDetail = async (data: StudentType) => {
   try {
-    await databases.updateDocument(
+    const res = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.studentCollectionId,
-      {
-        fullName,
-        email,
-        phoneNumber,
-        department,
-        matricNumber, 
-        status, 
-        level
-      }
-    )
+      data.userId,
+      data
+    );
+
+    if (res) {
+      revalidatePath(`admin/${data.adminId}/dashboard/`);
+    };
   } catch (error) {
-    
-  }
-  
-}
+    handleError(error, "Failed to update, try again");
+  };
+};

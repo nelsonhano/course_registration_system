@@ -165,7 +165,8 @@ export const editStudentAuth = z.object({
   phoneNumber: z.string(),
   department: z.string(),
   matricNumber: z.string(),
-  status: z.enum(["active", "noactive"]),
+  status: z.enum(["active", "inactive"]),
+  gender: z.enum(["female", "male"]),
   level: z.enum(["100" , "200", "300", "400", "500"]),
 });
 
