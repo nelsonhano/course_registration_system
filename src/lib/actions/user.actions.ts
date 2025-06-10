@@ -7,7 +7,7 @@ import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { avatarPlaceholderUrl } from "../constants";
-import { CreateAdminAccountParams, CreateStudentAccountParams, Student } from "./type";
+import { CreateAdminAccountParams, CreateStudentAccountParams, EditStudentData, Student } from "./type";
 const { databases, account, users } = await createAdminClient();
 
 
@@ -410,19 +410,25 @@ export const getAllAdvisor = async () => {
 };
 
 // Get a student by id
-export const getStudentById = async ( { id }: { id: string }) => {
+export const getStudentById = async ({ studentId }: { studentId: string }) => {
   try {
+    if (!studentId) {
+      throw new Error("Missing studentId in route params.");
+    }
+
     const result = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.adminCollectionId,
-      [Query.equal("email", [id])],
+      appwriteConfig.studentCollectionId,
+      [Query.equal("userId", studentId)]
     );
 
-    return result.documents[0];
+    return result.documents[0] ?? null;
   } catch (error) {
-    handleError(error, "User ID not found");
-  };
+    console.error("User ID not found:", error);
+    return null;
+  }
 };
+
 
 export const getAllStudents = async (): Promise<Student[]> => {
   try {
@@ -451,18 +457,45 @@ export const getAllStudents = async (): Promise<Student[]> => {
 
 
 // Get admin by id
-export const getAdminById = async ({ id }: { id: string }) => {
+export const getAdminById = async ({ adminId }: { adminId: string }) => {
+  if (!adminId) {
+    throw new Error("Admin ID is required to fetch admin data.");
+  }
+
   try {
     const result = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.adminCollectionId,
-      [Query.equal("$id", id)]
+      [Query.equal("$id", adminId)]
     );
 
-    // Return the first document (assuming IDs are unique)
     return result.documents[0];
   } catch (error) {
     console.error("Failed to get admin by ID:", error);
     throw error;
   }
 };
+
+
+export const updateStudentDetail = async (data: EditStudentData) => {
+  console.log(data);
+  const { fullName, email, phoneNumber, department, matricNumber, status, level} = data;
+  try {
+    await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.studentCollectionId,
+      {
+        fullName,
+        email,
+        phoneNumber,
+        department,
+        matricNumber, 
+        status, 
+        level
+      }
+    )
+  } catch (error) {
+    
+  }
+  
+}

@@ -3,13 +3,11 @@ import AdminHeadDetail from '@/components/AdminHeadDetail';
 import { getAdminById, getAllStudents } from '@/lib/actions/user.actions';
 import { SearchParamProps } from '@/lib/actions/type';
 
-export default async function page({params}:SearchParamProps) {
-  const {id} = params;
-  const admin = await getAdminById({id})
-  const student = await getAllStudents()
+export default async function page({ params }:SearchParamProps) {
+  const { id } = params;
   
-  console.log("admin" + admin);
-  console.log("student" + student);
+  const admin = await getAdminById({ adminId: id })
+  const students = await getAllStudents()
   return (
     <>
       <div className='mx-auto items-center w-5/6'>
@@ -20,7 +18,7 @@ export default async function page({params}:SearchParamProps) {
           text='View, add, edit, and manage student records across all department.'
         />
 
-        <AdminStudentTable students={student} />
+        <AdminStudentTable adminId={id} students={students} />
       </div>
     </>
   )

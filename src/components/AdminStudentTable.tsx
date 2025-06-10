@@ -6,17 +6,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { AiOutlineEdit } from "react-icons/ai";
 import { Student } from "@/lib/actions/type";
-import StudentDetail from "./StudentDetail";
+import Link from "next/link";
 
 type AdminStudentTableProps = {
     students: Student[];
+    adminId: string;
 };
 
-export default function AdminStudentTable({ students }: AdminStudentTableProps) {
-
-return (
-    <Table>
+export default function AdminStudentTable({ students, adminId }: AdminStudentTableProps) {
+    return (
+        <Table>
         <TableHeader>
             <TableRow className="bg-gray-100 rounded-4xl">
                 <TableHead className="w-[300px]">Student Name</TableHead>
@@ -27,13 +28,16 @@ return (
             </TableRow>
         </TableHeader>
         <TableBody>
-            {students.map((student)=> (
-                <TableRow key={student.id}>
-                    <TableCell>{student.fullName}</TableCell>
-                    <TableCell>{student.matricNumber}</TableCell>
-                    <TableCell>{student.department}</TableCell>
-                    <TableCell>{student.department}</TableCell>
-                    <TableCell><StudentDetail /></TableCell>
+                {students.map(({fullName, id, matricNumber, department, active})=> (
+                <TableRow key={id}>
+                    <TableCell>{fullName}</TableCell>
+                    <TableCell>{matricNumber}</TableCell>
+                    <TableCell className="capitalize">{department}</TableCell>
+                    <TableCell className="capitalize">{active || "active"}</TableCell>
+                    <TableCell>
+                        <Link href={`/admin/${adminId}/dashboard/${id}`}><AiOutlineEdit size={20}/>
+                        </Link>
+                    </TableCell>
                 </TableRow>
             ))}
         </TableBody>

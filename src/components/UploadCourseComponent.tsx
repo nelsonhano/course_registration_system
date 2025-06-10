@@ -36,7 +36,6 @@ export default function UploadCourseComponent() {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true);
         setErrorMessage("");
-        console.log(values);
         const { courseCode, courseTitle, department, level, semester, session, unit} = values;
     
         try {

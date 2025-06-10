@@ -47,4 +47,27 @@ interface Student {
   matricNumber: string;
   email: string;
   phoneNumber: string;
+  active: string;
+}
+
+
+interface EditStudentData {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  department: string;
+  matricNumber: string;
+  status: "active" | "noactive";
+  level: string;
+}
+// types.ts
+// /lib/actions/type.d.ts or types.ts
+export interface StudentType {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  department: string;
+  matricNumber: string;
+  status: "active" | "noactive";
+  level: "100" | "200" | "300" | "400" | "500";
 }

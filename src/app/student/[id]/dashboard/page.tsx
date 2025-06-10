@@ -5,9 +5,6 @@ export default async function Page({ params }: SearchParamProps) {
   const {id} = params;
   const patient = await getStudentById({id})
 
-  console.log(patient);
-  
-
   return (
     <div>
       Admin - ID: {id}

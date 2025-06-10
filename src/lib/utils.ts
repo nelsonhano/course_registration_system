@@ -158,6 +158,17 @@ export const academiSessionFormSchema = () => {
   })
 };
 
+
+export const editStudentAuth = z.object({
+  fullName: z.string(),
+  email: z.string(),
+  phoneNumber: z.string(),
+  department: z.string(),
+  matricNumber: z.string(),
+  status: z.enum(["active", "noactive"]),
+  level: z.enum(["100" , "200", "300", "400", "500"]),
+});
+
 export const uploadCourseFormSchema = () => {
   return z.object({
     department: z.string().min(3, "input must be greater than 2 characters").max(20, "input must not be greater than 20 characters"),

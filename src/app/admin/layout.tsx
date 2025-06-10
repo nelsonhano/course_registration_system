@@ -7,7 +7,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
   const getAuthorizedUser = await getCurrentUser();
   
   if (!(getAuthorizedUser?.role === "admin") && getAuthorizedUser?.user.$id) redirect("/admin-auth/sign-in");
-  console.log(getAuthorizedUser);
   
   return (
     <main>
