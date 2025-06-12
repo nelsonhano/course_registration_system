@@ -9,6 +9,7 @@ import { academiSessionFormSchema } from "@/lib/utils";
 import SubmitButton from "./SubmitButton";
 import { z } from "zod";
 import SelectSemester from "./SelectSemester";
+import { DatePicker } from "./DatePicker";
 
 export default function CreateSession() {
         const [isLoading, setIsLoading] = useState(false);
@@ -96,12 +97,7 @@ return (
                                 <div className="flex flex-col gap-1 mt-4">
                                     <FormLabel className="shad-form-label">Start Date</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Department"
-                                            className="w-full"
-                                            {...field}
-                                            value={field.value as string}
-                                        />
+                                        <DatePicker field={field} />
                                     </FormControl>
                                 </div>
                                 <FormMessage className="shad-form-message" />
@@ -116,12 +112,7 @@ return (
                                 <div className="flex flex-col gap-1 mt-4">
                                     <FormLabel className="shad-form-label">End Date </FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Department"
-                                            className="w-full"
-                                            {...field}
-                                            value={field.value as string}
-                                        />
+                                        <DatePicker field={field} />
                                     </FormControl>
                                 </div>
                                 <FormMessage className="shad-form-message" />

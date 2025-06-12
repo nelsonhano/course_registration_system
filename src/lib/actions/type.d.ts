@@ -62,3 +62,10 @@ export interface StudentType {
   gender: "female" | "male";
   level: "100" | "200" | "300" | "400" | "500";
 }
+
+export interface AssignCourseAdvisorProps {
+  params: string
+  selectAdvicor: string
+  selectLevel: string
+  selectDepartment: string
+};

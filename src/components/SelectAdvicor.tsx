@@ -10,14 +10,22 @@ import { advicorFormSchema } from "@/lib/utils";
 import SelectLevel from "./SelectLevel";
 import SelectDepartment from "./SelectDepartment";
 import SubmitButton from "./SubmitButton";
+import { assignAdvisor } from "@/lib/actions/user.actions";
+import { useRouter } from "next/navigation";
 
 
-type Advisor = {
-    fullName: string
+interface Advisor{
+    fullName: string;
 }
-export default function SelectAdvicor({ advisors }: { advisors: Advisor[]}) {
+
+interface Props {
+    advisors: Advisor[],
+    params: string,
+}
+export default function SelectAdvicor({ advisors, params }: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const router = useRouter()
 
     const formSchema = advicorFormSchema();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -30,11 +38,14 @@ export default function SelectAdvicor({ advisors }: { advisors: Advisor[]}) {
     });
     
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const { selectAdvicor, selectLevel, selectDepartment } = values;
         setIsLoading(true);
         setErrorMessage("");
         
         try {
-        console.log(values);
+            const res = await assignAdvisor({ params, selectAdvicor, selectLevel, selectDepartment });
+
+            router.push(`/admin/${params}/all-advisors`);
         } catch {
         } finally {
             setIsLoading(false);

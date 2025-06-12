@@ -7,7 +7,7 @@ import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { avatarPlaceholderUrl } from "../constants";
-import { CreateAdminAccountParams, CreateStudentAccountParams, Student, StudentType } from "./type";
+import { AssignCourseAdvisorProps, CreateAdminAccountParams, CreateStudentAccountParams, Student, StudentType } from "./type";
 import { revalidatePath } from "next/cache";
 const { databases, account, users } = await createAdminClient();
 
@@ -264,28 +264,6 @@ export const createAdminAccount = async (data: CreateAdminAccountParams) => {
   return parseStringify({ createdUser });
 };
 
-export const verifySecret = async ({
-  accountId,
-  password,
-}: {
-  accountId: string;
-  password: string;
-}) => {
-  try {
-    const { account } = await createAdminClient();
-    const session = await account.createSession(accountId, password);
-
-    (await cookies()).set("appwrite-session", session.secret, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
-    return parseStringify({ sessionId: session.$id });
-  } catch (e) {
-    handleError(parseStringify(e), "Failed to verify OTP");
-  }
-};
 
 // function to get user(student) data by email 
 export const getCurrentUser = async () => {
@@ -404,9 +382,48 @@ export const getAllAdvisor = async () => {
       [Query.equal("role", ["course advicer"])],
     );
 
-    return result.total > 0 ? result.documents : null;
+    if (result) return result.total > 0 ? result.documents : null;
   } catch (e) {
     handleError(e, "Course Advicer Not Found");
+  };
+};
+
+// Assign course advisor to courses/level
+export const assignAdvisor = async ({ params, selectAdvicor, selectLevel, selectDepartment}: AssignCourseAdvisorProps) => {
+  const { databases } = await createAdminClient();
+
+  try {
+    const res = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.assignedCourseAdvisorCollectionId,
+      ID.unique(),
+      {
+        adminId:params,
+        selectAdvicor,
+        selectLevel,
+        selectDepartment
+      });
+
+      if (res) return res.total > 0 ? res.documents : null;
+  } catch (error) {
+    handleError(error, "Failed to assign course advisor");
+  }
+};
+
+// Get all assigned course advisors
+export const getAllAssigAdvisor = async () => {
+  try {
+    const res = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.assignedCourseAdvisorCollectionId
+    );
+
+    console.log(res.documents);
+    
+
+    return res.total > 0 ? res.documents : null;
+  } catch (error) {
+    handleError(error, "Failed to get assigned course advisor, try again later.....");
   };
 };
 

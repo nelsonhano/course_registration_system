@@ -185,7 +185,7 @@ export const uploadCourseFormSchema = () => {
 export const advicorFormSchema = () => {
         return z.object({
             selectAdvicor: z.string(),
-            selectLevel: z.enum(["100 level", "200 level", "300 level", "400 level", "500 level"]),
+            selectLevel: z.enum(["100", "200","300","400","500"]),
             selectDepartment: z.enum(
               [
                 "Agricultural Extension & Communication Technology",
@@ -239,10 +239,10 @@ export const advicorFormSchema = () => {
                 "Anatomy",
                 "Biomedical Technology",
                 "Physiology",
-              ]
-            )
+              ],
+            ),
         });
-    }
+    };
 
 export const getFileTypesParams = (type: string) => {
   switch (type) {

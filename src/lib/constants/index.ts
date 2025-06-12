@@ -12,7 +12,7 @@ export const adminNavItems = (adminId: string) => [
   {
     name: "Assign Advisors",
     icon: "/assets/images/bar-chart.png",
-    url: `/admin/${adminId}/assign-advisors`,
+    url: `/admin/${adminId}/all-advisors`,
   },
   {
     name: "Sessions & Windows",
@@ -60,11 +60,11 @@ export const permission = [
 ] as const;
 
 export const levels = [
-  "100 level",
-  "200 level",
-  "300 level",
-  "400 level",
-  "500 level",
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
 ] as const;
 
 export const editLevels = [
@@ -139,7 +139,7 @@ export const futaDepartments = [
   "Physiology",
 ] as const; 
 
-export const semesters = ["first semester", "second semester"] as const;
+export const semesters = ["first" , "second"] as const;
 
 export const homeDetails = [
   {

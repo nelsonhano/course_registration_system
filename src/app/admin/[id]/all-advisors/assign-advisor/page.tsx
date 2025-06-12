@@ -18,7 +18,7 @@ export default async function page({params}:SearchParamProps) {
           text='Assign academic advisors to specific departments and levels to manage student course approvals.'
         />
 
-        <SelectAdvicor advisors={advisors}/>
+        <SelectAdvicor params={params.id} advisors={advisors}/>
       </div>
     </>
   )

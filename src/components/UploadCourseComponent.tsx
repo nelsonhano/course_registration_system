@@ -12,6 +12,7 @@ import SelectSemester from "./SelectSemester";
 import SelectLevel from "./SelectLevel";
 import { courseUploader } from "@/lib/actions/file.action";
 import { useRouter } from "next/navigation";
+import { DatePicker } from "./DatePicker";
 
 
 export default function UploadCourseComponent() {
@@ -126,11 +127,7 @@ export default function UploadCourseComponent() {
                                 <div className="flex flex-col gap-1 mt-4">
                                     <FormLabel className="shad-form-label">Session</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Session"
-                                            {...field}
-                                            value={field.value as string}
-                                        />
+                                        <DatePicker field={field} />
                                     </FormControl>
                                 </div>
                                 <FormMessage className="shad-form-message" />
