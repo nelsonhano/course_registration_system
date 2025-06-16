@@ -17,7 +17,7 @@ export const adminNavItems = (adminId: string) => [
   {
     name: "Sessions & Windows",
     icon: "/assets/icons/video.svg",
-    url: `/admin/${adminId}/session-windows`,
+    url: `/admin/${adminId}/session-windows/session`,
   },
   {
     name: "Broadcast Message",

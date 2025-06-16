@@ -11,7 +11,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import SubmitButton from "./SubmitButton";
 import SelectPermission from "./SelectPermission";
-import { uploadBroadcastMessage } from "@/lib/actions/file.action";
+import { uploadBroadcastMessage } from "@/lib/actions/user.actions";
 
 export default function BroadCastComponent() {
     const [errorMessage, setErrorMessage] = useState("");

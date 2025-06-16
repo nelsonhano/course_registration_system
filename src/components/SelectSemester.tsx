@@ -23,8 +23,8 @@ export default function SelectSemester({ placeholder, value, field }: Props) {
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="first semester">First Semester</SelectItem>
-        <SelectItem value="second semester">Second Semester</SelectItem>
+        <SelectItem value="first">First Semester</SelectItem>
+        <SelectItem value="second">Second Semester</SelectItem>
       </SelectContent>
     </Select>
 

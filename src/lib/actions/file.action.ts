@@ -33,18 +33,3 @@ export const courseUploader = async ({ courseCode, courseTitle, department, leve
     handleError(error, "Field to create course");
   }
 }
-
-
-export const uploadBroadcastMessage = async ({ title, message, permission }: BroadcastParams) => {
-  const data = { title, message, permission };
-  try {
-    const uploadBroadcast = await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.coursesCollectionId,
-      ID.unique(),
-      data,
-    )
-  } catch (error) {
-    
-  }
-}

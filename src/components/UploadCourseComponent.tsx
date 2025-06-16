@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { DatePicker } from "./DatePicker";
 
 
-export default function UploadCourseComponent() {
+export default function UploadCourseComponent({ userId }: { userId: string }) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
@@ -43,7 +43,7 @@ export default function UploadCourseComponent() {
             const uploadCourse = 
             await courseUploader({ courseCode, courseTitle, department, level, semester, session, unit });
 
-            uploadCourse && form.reset() && router.push("/admin/upload-course");
+            uploadCourse && form.reset() && router.push(`/admin/${userId}/upload-course`);
         } catch(error) {
             console.log(error);
         } finally {

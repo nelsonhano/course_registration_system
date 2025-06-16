@@ -149,13 +149,35 @@ export const broadCastFormSchema = () => {
 };
 
 export const academiSessionFormSchema = () => {
-  return z.object({
-    sessionTitle: z.string().max(20),
-    semester: z.enum(["first semester", "second semester"]),
-    endDate: z.string().max(20),
-    startDate: z.string().max(20),
-
-  })
+  return z
+    .object({
+      sessionTitle: z.string().max(20, "Session title must be 20 characters or fewer."),
+      semester: z.enum(["first", "second"], {
+        required_error: "Please select a semester.",
+      }),
+      startDate: z.coerce.date({
+        required_error: "Start date is required.",
+        invalid_type_error: "Invalid date format for start date.",
+      }),
+      endDate: z.coerce.date({
+        required_error: "End date is required.",
+        invalid_type_error: "Invalid date format for end date.",
+      }),
+    })
+    .refine(
+      (data) => data.startDate.getTime() !== data.endDate.getTime(),
+      {
+        path: ["endDate"],
+        message: "Start date and end date cannot be the same.",
+      }
+    )
+    .refine(
+      (data) => data.startDate < data.endDate,
+      {
+        path: ["endDate"],
+        message: "End date must be after start date.",
+      }
+    );
 };
 
 
@@ -173,8 +195,8 @@ export const editStudentAuth = z.object({
 export const uploadCourseFormSchema = () => {
   return z.object({
     department: z.string().min(3, "input must be greater than 2 characters").max(20, "input must not be greater than 20 characters"),
-    level: z.enum(["100 level", "200 level", "300 level", "400 level", "500 level"]),
-    semester: z.enum(["first semester", "second semester"]),
+    level: z.enum(["100", "200", "300", "400", "500"]),
+    semester: z.enum(["first", "second"]),
     session: z.string(),
     courseCode: z.string().min(3, "input must be greater than 2 characters").max(10, "input must not be greater than 10 characters"),
     courseTitle: z.string().min(3, "input must be greater than 2 characters").max(50, "input must not be greater than 50 characters"),
@@ -258,3 +280,66 @@ export const getFileTypesParams = (type: string) => {
       return ["document"];
   }
 };
+
+
+
+/**
+ * Calculates the time remaining until a specified end date.
+ *
+ * @param endDateStr - A string representing the end date in ISO format (e.g., "2025-06-23T00:00:00.000+00:00").
+ * @returns An object containing the remaining time split into days, hours, minutes, and seconds.
+ * If the end date has passed, all values will be 0.
+ *
+ * @example
+ * const countdown = getCountdown("2025-06-23T00:00:00.000+00:00");
+ * // => { days: 6, hours: 14, minutes: 10, seconds: 42 }
+ */
+
+export function getCountdown(endDateStr: string) {
+  const endDate = new Date(endDateStr).getTime();
+  const now = new Date().getTime();
+
+  const diff = endDate - now;
+
+  if (diff <= 0) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0
+    };
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds
+  };
+};
+
+/**
+ * Formats an ISO date string into "dd, MonthName, yyyy" format.
+ *
+ * @param dateStr - A string representing a date (e.g., "2025-06-16T00:00:00.000+00:00").
+ * @returns A formatted string like "16, June, 2025".
+ *
+ * @example
+ * formatDateToDDMonthYYYY("2025-06-16T00:00:00.000+00:00");
+ * // => "16, June, 2025"
+ */
+export function formatDateToDDMonthYYYY(dateStr: string): string {
+  const date = new Date(dateStr);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = date.toLocaleString('default', { month: 'long' }); // e.g., "June"
+  const year = date.getFullYear();
+
+  return `${day}, ${month}, ${year}`;
+}
+

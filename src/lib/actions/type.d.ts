@@ -30,7 +30,16 @@ type CourseParams = {
 
 type BroadcastParams = {
   title: string, message: string, permission: string
-}
+};
+
+export type CreateSessionProps = {
+  adminId: string;
+  sessionTitle: string;
+  semester: "first" | "second";
+  startDate: Date;
+  endDate: Date;
+};
+
 
 export declare type SearchParamProps = {
   params: { [key: string]: string };

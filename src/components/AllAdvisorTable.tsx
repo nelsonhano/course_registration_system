@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -21,7 +20,6 @@ interface AllAdvisorTableProps {
 export default function AllAdvisorTable({ advisors }: AllAdvisorTableProps) {
   return (
     <Table>
-      <TableCaption>No Advisors yet</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Advisor</TableHead>

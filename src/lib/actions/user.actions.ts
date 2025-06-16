@@ -7,7 +7,7 @@ import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { avatarPlaceholderUrl } from "../constants";
-import { AssignCourseAdvisorProps, CreateAdminAccountParams, CreateStudentAccountParams, Student, StudentType } from "./type";
+import { AssignCourseAdvisorProps, BroadcastParams, CreateAdminAccountParams, CreateSessionProps, CreateStudentAccountParams, Student, StudentType } from "./type";
 import { revalidatePath } from "next/cache";
 const { databases, account, users } = await createAdminClient();
 
@@ -447,6 +447,19 @@ export const getStudentById = async ({ studentId }: { studentId: string }) => {
   }
 };
 
+// get end of registration date
+export const getCloseRegDate = async () => {
+  try {
+    const res = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.studentCourseReg
+    );
+
+    return res.documents[0].endDate;
+  } catch (error) {
+    handleError(error, "Couldn't get closing date.")
+  };
+};
 
 export const getAllStudents = async (): Promise<Student[]> => {
   try {
@@ -510,5 +523,49 @@ export const updateStudentDetail = async (data: StudentType) => {
     };
   } catch (error) {
     handleError(error, "Failed to update, try again");
+  };
+};
+
+
+export const getCreatedSession = async () => {
+  try {
+    const res = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.studentCourseReg
+    );
+
+    return res.documents[0];
+  } catch (error) {
+    handleError(error, "Failed to get school session info");
+  };
+};
+
+
+export const uploadBroadcastMessage = async ({ title, message, permission }: BroadcastParams) => {
+  const data = { title, message, permission };
+  try {
+    const uploadBroadcast = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.coursesCollectionId,
+      ID.unique(),
+      data,
+    )
+  } catch (error) {
+    handleError(error, "Failed to upload broadcast message");
+  };
+};
+
+
+export const createSession = async ({ adminId, sessionTitle, semester, endDate, startDate }: CreateSessionProps) => {
+  const data = { adminId, sessionTitle, semester, endDate, startDate };
+  try {
+    await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.studentCourseReg,
+      ID.unique(),
+      data
+    );
+  } catch (error) {
+    handleError(error, "Failed to create school registration session");
   };
 };

@@ -1,13 +1,14 @@
+import StudentInfoComp from '@/components/StudentInfoComp';
 import { SearchParamProps } from '@/lib/actions/type'
-import { getStudentById } from '@/lib/actions/user.actions';
 
 export default async function Page({ params }: SearchParamProps) {
-  const {id} = params;
-  const patient = await getStudentById({id})
+  const studentId = params.id;
 
   return (
-    <div>
-      Admin - ID: {id}
-    </div>
+    <main>
+      <div className='mx-auto items-center w-5/6 h-[585px] overflow-hidden space-y-3'>
+        <StudentInfoComp studentId={studentId} />
+      </div>
+    </main>
   );
 }

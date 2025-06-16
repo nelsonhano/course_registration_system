@@ -12,7 +12,6 @@ export default async function page({params}:SearchParamProps) {
     department: doc.selectDepartment,
   }));
   
-  // console.log({advisors})
   return (
     <>
       <div className='mx-auto items-center w-5/6 h-[585px] overflow-hidden space-y-3'>
